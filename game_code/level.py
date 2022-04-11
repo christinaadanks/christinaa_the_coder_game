@@ -1,20 +1,20 @@
 import pygame
-from game.imports import import_csv_data, import_graphics
-from game.settings import *
-from game.tiles import Tile, GraphicTiles, Box, Fruit
-from game.enemy import Enemy
+from game_code.imports import import_csv_data, import_graphics
+from game_code.settings import *
+from game_code.tiles import Tile, GraphicTiles, Box, Fruit
+from game_code.enemy import Enemy
 
 
 class Level:
     """
-    Class for handling levels
+    Class for handling levels_files
     """
     def __init__(self, level_data, game_surface):
         """
         Initialize level setup
         Args:
             level_data: level data path we are importing from Tiled CSV file
-            game_surface: screen the game is to be displayed on
+            game_surface: screen the game_code is to be displayed on
         """
         # overall world setup
         self.display_surface = game_surface
@@ -61,12 +61,12 @@ class Level:
                     y = row_index * TILE_SIZE
 
                     if category == 'background':
-                        bg_tile_list = import_graphics('../graphics/backgrounds/backgrounds.png')
+                        bg_tile_list = import_graphics('../graphics_files/backgrounds/backgrounds.png')
                         bg_surface = bg_tile_list[int(col)]
                         sprite = GraphicTiles(TILE_SIZE, x, y, bg_surface)
 
                     if category == 'terrain':
-                        terrain_tile_list = import_graphics('../graphics/terrain/terrain.png')
+                        terrain_tile_list = import_graphics('../graphics_files/terrain/terrain.png')
                         terrain_surface = terrain_tile_list[int(col)]
                         sprite = GraphicTiles(TILE_SIZE, x, y, terrain_surface)
 
@@ -75,24 +75,24 @@ class Level:
 
                     if category == 'fruits':
                         if col == '0':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Apple.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Apple.png')
                         if col == '17':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Bananas.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Bananas.png')
                         if col == '34':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Cherries.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Cherries.png')
                         if col == '51':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Kiwi.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Kiwi.png')
                         if col == '68':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Melon.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Melon.png')
                         if col == '85':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Orange.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Orange.png')
                         if col == '102':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Pineapple.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Pineapple.png')
                         if col == '119':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Strawberry.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Strawberry.png')
 
                     if category == 'enemies':
-                        sprite = Enemy(TILE_SIZE, x, y, '../graphics/characters/enemy/slime_enemy.png')
+                        sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/slime_enemy.png')
 
                     if category == 'constraints':
                         sprite = Tile(TILE_SIZE, x, y)

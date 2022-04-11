@@ -1,5 +1,5 @@
 import pygame
-from game.tiles import AnimatedTile
+from game_code.tiles import AnimatedTile
 from random import randint
 
 

@@ -1,9 +1,9 @@
 import pygame
 import sys
 
-from game.settings import *
-from game.level import Level
-from game.game_data import level_0
+from game_code.settings import *
+from game_code.level import Level
+from game_code.game_data import level_0
 
 pygame.init()
 # screen size (can update from settings.py)

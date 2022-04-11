@@ -1,6 +1,6 @@
 from csv import reader
 import pygame
-from game.settings import *
+from game_code.settings import *
 
 
 def import_csv_data(path):
@@ -20,9 +20,9 @@ def import_csv_data(path):
 
 def import_graphics(path):
     """
-    Import graphics
+    Import graphics_files
     Args:
-        path: which graphics we are importing
+        path: which graphics_files we are importing
     Returns:
     """
     surface = pygame.image.load(path).convert_alpha()

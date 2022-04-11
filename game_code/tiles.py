@@ -29,7 +29,7 @@ class Tile(pygame.sprite.Sprite):
 
 class GraphicTiles(Tile):
     """
-    Class to fill tiles with graphics
+    Class to fill tiles with graphics_files
     """
     def __init__(self, size, x, y, surface):
         super().__init__(size, x, y)
@@ -42,7 +42,7 @@ class Box(GraphicTiles):
     Class for single tile 'box'
     """
     def __init__(self, size, x, y):
-        super().__init__(size, x, y, pygame.image.load('../graphics/boxes/box.png').convert_alpha())
+        super().__init__(size, x, y, pygame.image.load('../graphics_files/boxes/box.png').convert_alpha())
 
 
 class AnimatedTile(Tile):
