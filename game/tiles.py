@@ -1,4 +1,5 @@
 import pygame
+from imports import import_graphics
 
 
 class Tile(pygame.sprite.Sprite):
@@ -7,7 +8,7 @@ class Tile(pygame.sprite.Sprite):
     """
     def __init__(self, size, x, y):
         """
-        Initiliaze tile setup
+        Initialize tile setup
         Args:
             size: size of the tiles (currently set at 32px)
             x: x position (x,y)
@@ -42,3 +43,24 @@ class Box(GraphicTiles):
     """
     def __init__(self, size, x, y):
         super().__init__(size, x, y, pygame.image.load('../graphics/boxes/box.png').convert_alpha())
+
+
+class AnimatedTile(Tile):
+    """
+    Class for the animated tiles
+    """
+    def __init__(self, size, x, y, path):
+        super().__init__(size, x, y)
+        self.frames = import_graphics(path)
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+
+    def animate(self):
+        self.frame_index += 0.15
+        if self.frame_index >= len(self.frames):
+            self.frame_index = 0
+        self.image = self.frames[int(self.frame_index)]
+
+    def update(self, shift):
+        self.animate()
+        self.rect.x += shift

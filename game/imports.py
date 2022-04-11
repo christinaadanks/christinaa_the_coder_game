@@ -1,5 +1,6 @@
 from csv import reader
 import pygame
+from os import walk
 from game.settings import *
 
 def import_csv_data(path):
@@ -15,6 +16,7 @@ def import_csv_data(path):
         for row in level:
             terrain_map.append(list(row))
         return terrain_map
+
 
 def import_graphics(path):
     """
@@ -33,7 +35,8 @@ def import_graphics(path):
             x = col * TILE_SIZE
             y = row * TILE_SIZE
 
-            new_surface = pygame.Surface((TILE_SIZE, TILE_SIZE))
+            new_surface = pygame.Surface((TILE_SIZE, TILE_SIZE)).convert_alpha()
+            new_surface.fill((0, 0, 0, 0))
             new_surface.blit(surface, (0, 0), pygame.Rect(x, y, TILE_SIZE, TILE_SIZE))
             split_tiles.append(new_surface)
     return split_tiles

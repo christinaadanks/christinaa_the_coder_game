@@ -1,7 +1,7 @@
 import pygame
 from game.imports import import_csv_data, import_graphics
 from game.settings import *
-from game.tiles import Tile, GraphicTiles, Box
+from game.tiles import Tile, GraphicTiles, Box, AnimatedTile
 
 
 class Level:
@@ -31,6 +31,10 @@ class Level:
         box_data = import_csv_data(level_data['boxes'])
         self.box_sprites = self.create_tile_group(box_data, 'box')
 
+        # fruits
+        fruit_data = import_csv_data(level_data['fruits'])
+        self.fruit_sprites = self.create_tile_group(fruit_data, 'fruits')
+
     def create_tile_group(self, layout, category):
         """
         create tile groups to display in world
@@ -59,6 +63,10 @@ class Level:
 
                     if category == 'box':
                         sprite = Box(TILE_SIZE, x, y)
+
+                    if category == 'fruits':
+                        sprite = AnimatedTile(TILE_SIZE, x, y, '../graphics/fruits/watermelon/Melon.png')
+
                     sprite_group.add(sprite)
         return sprite_group
 
@@ -75,3 +83,6 @@ class Level:
         # boxes
         self.box_sprites.update(self.display_shift)
         self.box_sprites.draw(self.display_surface)
+        # fruits
+        self.fruit_sprites.update(self.display_shift)
+        self.fruit_sprites.draw(self.display_surface)
