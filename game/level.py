@@ -1,7 +1,8 @@
 import pygame
 from game.imports import import_csv_data, import_graphics
 from game.settings import *
-from game.tiles import Tile, GraphicTiles, Box, AnimatedTile
+from game.tiles import Tile, GraphicTiles, Box, Fruit
+from game.enemy import Enemy
 
 
 class Level:
@@ -35,6 +36,14 @@ class Level:
         fruit_data = import_csv_data(level_data['fruits'])
         self.fruit_sprites = self.create_tile_group(fruit_data, 'fruits')
 
+        # enemies
+        enemy_data = import_csv_data(level_data['enemies'])
+        self.enemy_sprites = self.create_tile_group(enemy_data, 'enemies')
+
+        # constraints
+        constraint_data = import_csv_data(level_data['constraints'])
+        self.constraint_sprites = self.create_tile_group(constraint_data, 'constraints')
+
     def create_tile_group(self, layout, category):
         """
         create tile groups to display in world
@@ -65,10 +74,36 @@ class Level:
                         sprite = Box(TILE_SIZE, x, y)
 
                     if category == 'fruits':
-                        sprite = AnimatedTile(TILE_SIZE, x, y, '../graphics/fruits/watermelon/Melon.png')
+                        if col == '0':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Apple.png')
+                        if col == '17':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Bananas.png')
+                        if col == '34':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Cherries.png')
+                        if col == '51':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Kiwi.png')
+                        if col == '68':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Melon.png')
+                        if col == '85':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Orange.png')
+                        if col == '102':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Pineapple.png')
+                        if col == '119':
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics/fruits/Strawberry.png')
+
+                    if category == 'enemies':
+                        sprite = Enemy(TILE_SIZE, x, y, '../graphics/characters/enemy/slime_enemy.png')
+
+                    if category == 'constraints':
+                        sprite = Tile(TILE_SIZE, x, y)
 
                     sprite_group.add(sprite)
         return sprite_group
+
+    def enemy_collision(self):
+        for enemy in self.enemy_sprites.sprites():
+            if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
+                enemy.reverse_direction()
 
     def run(self):
         """
@@ -80,9 +115,18 @@ class Level:
         # terrain
         self.terrain_sprites.update(self.display_shift)
         self.terrain_sprites.draw(self.display_surface)
+
+        # enemy
+        self.enemy_sprites.update(self.display_shift)
+        # constraints
+        self.constraint_sprites.update(self.display_shift)
+        self.enemy_collision()
+        self.enemy_sprites.draw(self.display_surface)
+
         # boxes
         self.box_sprites.update(self.display_shift)
         self.box_sprites.draw(self.display_surface)
+
         # fruits
         self.fruit_sprites.update(self.display_shift)
         self.fruit_sprites.draw(self.display_surface)

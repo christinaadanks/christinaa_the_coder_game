@@ -1,7 +1,7 @@
 from csv import reader
 import pygame
-from os import walk
 from game.settings import *
+
 
 def import_csv_data(path):
     """
