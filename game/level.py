@@ -1,7 +1,7 @@
 import pygame
 from game.imports import import_csv_data, import_graphics
 from game.settings import *
-from game.tiles import Tile, GraphicTiles
+from game.tiles import Tile, GraphicTiles, Box
 
 
 class Level:
@@ -19,9 +19,17 @@ class Level:
         self.display_surface = game_surface
         self.display_shift = 0
 
+        # background setup
+        background_data = import_csv_data(level_data['background'])
+        self.background_sprites = self.create_tile_group(background_data, 'background')
+
         # terrain setup
         terrain_data = import_csv_data(level_data['terrain'])
         self.terrain_sprites = self.create_tile_group(terrain_data, 'terrain')
+
+        # box setup
+        box_data = import_csv_data(level_data['boxes'])
+        self.box_sprites = self.create_tile_group(box_data, 'box')
 
     def create_tile_group(self, layout, category):
         """
@@ -39,16 +47,31 @@ class Level:
                     x = col_index * TILE_SIZE
                     y = row_index * TILE_SIZE
 
+                    if category == 'background':
+                        bg_tile_list = import_graphics('../graphics/backgrounds/backgrounds.png')
+                        bg_surface = bg_tile_list[int(col)]
+                        sprite = GraphicTiles(TILE_SIZE, x, y, bg_surface)
+
                     if category == 'terrain':
                         terrain_tile_list = import_graphics('../graphics/terrain/terrain.png')
-                        tile_surface = terrain_tile_list[int(col)]
-                        sprite = GraphicTiles(TILE_SIZE, x, y, tile_surface)
-                        sprite_group.add(sprite)
+                        terrain_surface = terrain_tile_list[int(col)]
+                        sprite = GraphicTiles(TILE_SIZE, x, y, terrain_surface)
+
+                    if category == 'box':
+                        sprite = Box(TILE_SIZE, x, y)
+                    sprite_group.add(sprite)
         return sprite_group
 
     def run(self):
         """
-        Run the level
+        Run the level (display the sprites, make sure to put bottom layers first)
         """
-        self.terrain_sprites.draw(self.display_surface)
+        # background
+        self.background_sprites.update(self.display_shift)
+        self.background_sprites.draw(self.display_surface)
+        # terrain
         self.terrain_sprites.update(self.display_shift)
+        self.terrain_sprites.draw(self.display_surface)
+        # boxes
+        self.box_sprites.update(self.display_shift)
+        self.box_sprites.draw(self.display_surface)

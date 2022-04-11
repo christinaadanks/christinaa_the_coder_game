@@ -35,3 +35,10 @@ class GraphicTiles(Tile):
         # instead of fill with color, fill with tile graphic
         self.image = surface
 
+
+class Box(GraphicTiles):
+    """
+    Class for single tile 'box'
+    """
+    def __init__(self, size, x, y):
+        super().__init__(size, x, y, pygame.image.load('../graphics/boxes/box.png').convert_alpha())
