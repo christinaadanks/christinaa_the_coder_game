@@ -74,7 +74,7 @@ class Level:
                         sprite = Box(TILE_SIZE, x, y)
 
                     if category == 'fruits':
-                        if col == '0':
+                        if col == 'level_0':
                             sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Apple.png')
                         if col == '17':
                             sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Bananas.png')
