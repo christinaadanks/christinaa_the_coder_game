@@ -14,7 +14,7 @@ class Game:
     """
     def __init__(self):
         self.status = 'game_menu'
-        self.max_level = 1
+        self.max_level = 0
         self.game_menu = GameMenu(0, self.max_level, screen, self.start_level)
 
     def screen_dimensions(self):

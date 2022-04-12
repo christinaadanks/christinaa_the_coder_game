@@ -5,13 +5,14 @@ from game_code.tiles import Tile, GraphicTiles, Box, Fruit
 from game_code.enemy import Enemy
 from game_code.player import Player
 from game_code.game_data import levels
+from game_code.backgrounds import Background, Clouds
 
 
 class Level:
     """
     Class for handling levels_files
     """
-    def __init__(self, curr_level, surface, create_menu):
+    def __init__(self, curr_level, surface, open_menu):
         """
         Initialize level setup
         Args:
@@ -19,7 +20,7 @@ class Level:
             game_surface: screen the game_code is to be displayed on
         """
         # overall world setup
-        self.create_menu = create_menu
+        self.open_menu = open_menu
         self.curr_level = curr_level
         # get level data
         level_data = levels[self.curr_level]
@@ -56,12 +57,17 @@ class Level:
         constraint_data = import_csv_data(level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_data, 'constraints')
 
+        # background
+        w = len(fruit_data[0]) * TILE_SIZE
+        self.background = Background()
+        self.clouds = Clouds(200, w, 25)
+
     def input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN]:
-            self.create_menu(self.curr_level, self.new_max)
+            self.open_menu(self.curr_level, self.new_max)
         if keys[pygame.K_ESCAPE]:
-            self.create_menu(self.curr_level, 0)
+            self.open_menu(self.curr_level, 0)
 
     def create_player(self, layout):
         for row_index, row in enumerate(layout):
@@ -209,17 +215,20 @@ class Level:
 
     def player_death(self):
         if self.player.sprite.rect.top > HEIGHT:
-            self.create_menu(self.curr_level, 0)
+            self.open_menu(self.curr_level, 0)
 
     def player_complete(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
-            self.create_menu(self.curr_level, self.new_max)
+            self.open_menu(self.curr_level + 1, self.new_max)
 
     def run(self):
         """
         Run the level (display the sprites, make sure to put bottom layers first)
         """
         self.input()
+        # background
+        self.background.draw(self.display_surface)
+        self.clouds.draw(self.display_surface, self.display_shift)
         # terrain
         self.terrain_sprites.update(self.display_shift)
         self.terrain_sprites.draw(self.display_surface)
@@ -247,4 +256,3 @@ class Level:
         self.player.draw(self.display_surface)
         self.player_death()
         self.player_complete()
-

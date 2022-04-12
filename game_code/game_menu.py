@@ -1,4 +1,6 @@
 import pygame
+
+from game_code.backgrounds import Background
 from game_code.game_data import levels
 from game_code.imports import import_graphics
 
@@ -15,7 +17,7 @@ class Node(pygame.sprite.Sprite):
 
     def update(self):
         if self.status == 'locked':
-            color = (255, 0, 0, 100)
+            color = (0, 0, 0, 100)
             tint = self.image.copy()
             tint.fill(color, None, pygame.BLEND_RGBA_MULT)
             self.image.blit(tint, (0, 0))
@@ -24,6 +26,7 @@ class Node(pygame.sprite.Sprite):
 class Icon(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
+        self.pos = pos
         self.frames = import_graphics('../graphics_files/fruits/Melon.png')
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
@@ -37,6 +40,8 @@ class Icon(pygame.sprite.Sprite):
 
     def update(self):
         self.animate()
+        self.rect.center = self.pos
+
 
 class GameMenu:
     """
@@ -52,6 +57,7 @@ class GameMenu:
         # sprites
         self.nodes = pygame.sprite.Group()
         self.icon = pygame.sprite.GroupSingle()
+        self.background = Background()
         self.setup_nodes()
         self.setup_icon()
 
@@ -78,10 +84,11 @@ class GameMenu:
             self.create_level(self.curr_level)
 
     def update_icon(self):
-        self.icon.sprite.rect.center = self.nodes.sprites() [self.curr_level].rect.center
+        self.icon.sprite.pos = self.nodes.sprites()[self.curr_level].rect.center
 
     def run(self):
         self.input()
+        self.background.draw(self.display_surface)
         self.update_icon()
         self.icon.update()
         self.nodes.update()
