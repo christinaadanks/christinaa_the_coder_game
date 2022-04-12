@@ -20,6 +20,12 @@ class Level:
         self.display_surface = game_surface
         self.display_shift = 0
 
+        # player
+        player_data = import_csv_data(level_data['player'])
+        self.player = pygame.sprite.GroupSingle()
+        self.goal = pygame.sprite.Group()
+        self.create_player(player_data)
+
         # background setup
         background_data = import_csv_data(level_data['background'])
         self.background_sprites = self.create_tile_group(background_data, 'background')
@@ -43,6 +49,21 @@ class Level:
         # constraints
         constraint_data = import_csv_data(level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_data, 'constraints')
+
+    def create_player(self, layout):
+        for row_index, row in enumerate(layout):
+            for col_index, col in enumerate(row):
+                x = col_index * TILE_SIZE
+                y = row_index * TILE_SIZE
+                if col != '-1':
+                    if col == '4':
+                        print('player here')
+                    else:
+                        goal_surface_list = import_graphics('../graphics_files/characters/player/end.png')
+                        goal_surface = goal_surface_list[int(col)]
+                        sprite = GraphicTiles(TILE_SIZE, x, y, goal_surface)
+                        self.goal.add(sprite)
+
 
     def create_tile_group(self, layout, category):
         """
@@ -130,3 +151,7 @@ class Level:
         # fruits
         self.fruit_sprites.update(self.display_shift)
         self.fruit_sprites.draw(self.display_surface)
+
+        # players
+        self.goal.update(self.display_shift)
+        self.goal.draw(self.display_surface)
