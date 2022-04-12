@@ -143,6 +143,9 @@ class Level:
             player.speed = 8
 
     def player_x_collision(self):
+        """
+        Handle collision b/t player vs objects (boxes + terrain) moving on the x-axis
+        """
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
         # set the sprites that the player can collide with (box + terrain)
@@ -156,8 +159,11 @@ class Level:
                     player.rect.right = sprite.rect.left
 
     def player_y_collision(self):
+        """
+        Handle collision b/t player vs objects (boxes + terrain) moving on the y-axis
+        """
         player = self.player.sprite
-        player.apply_gravity()
+        player.get_gravity()
 
         # set the sprites that the player can collide with (box + terrain)
         collision_sprites = self.terrain_sprites.sprites() + self.box_sprites.sprites()
