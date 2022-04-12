@@ -88,7 +88,7 @@ class Level:
                         sprite = Box(TILE_SIZE, x, y)
 
                     if category == 'fruits':
-                        if col == 'level_0':
+                        if col == '0':
                             sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Apple.png')
                         if col == '17':
                             sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Bananas.png')
@@ -106,7 +106,14 @@ class Level:
                             sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Strawberry.png')
 
                     if category == 'enemies':
-                        sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/slime_enemy.png')
+                        if col == '1':
+                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/slime_enemy.png')
+                        if col == '2':
+                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/duck_enemy.png')
+                        if col == '3':
+                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/ghost_enemy.png')
+                        if col == '4':
+                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/rabbit_enemy.png')
 
                     if category == 'constraints':
                         sprite = Tile(TILE_SIZE, x, y)
