@@ -4,13 +4,14 @@ from game_code.settings import *
 from game_code.tiles import Tile, GraphicTiles, Box, Fruit
 from game_code.enemy import Enemy
 from game_code.player import Player
+from game_code.game_data import levels
 
 
 class Level:
     """
     Class for handling levels_files
     """
-    def __init__(self, level_data, game_surface):
+    def __init__(self, curr_level, surface, create_menu):
         """
         Initialize level setup
         Args:
@@ -18,7 +19,14 @@ class Level:
             game_surface: screen the game_code is to be displayed on
         """
         # overall world setup
-        self.display_surface = game_surface
+        self.create_menu = create_menu
+        self.curr_level = curr_level
+        # get level data
+        level_data = levels[self.curr_level]
+        self.new_max = level_data['unlock']
+
+        # basic setup
+        self.display_surface = surface
         self.display_shift = 0
         self.current_x = 0
 
@@ -47,6 +55,13 @@ class Level:
         # constraints
         constraint_data = import_csv_data(level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_data, 'constraints')
+
+    def input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:
+            self.create_menu(self.curr_level, self.new_max)
+        if keys[pygame.K_ESCAPE]:
+            self.create_menu(self.curr_level, 0)
 
     def create_player(self, layout):
         for row_index, row in enumerate(layout):
@@ -192,10 +207,19 @@ class Level:
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False
 
+    def player_death(self):
+        if self.player.sprite.rect.top > HEIGHT:
+            self.create_menu(self.curr_level, 0)
+
+    def player_complete(self):
+        if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
+            self.create_menu(self.curr_level, self.new_max)
+
     def run(self):
         """
         Run the level (display the sprites, make sure to put bottom layers first)
         """
+        self.input()
         # terrain
         self.terrain_sprites.update(self.display_shift)
         self.terrain_sprites.draw(self.display_surface)
@@ -221,4 +245,6 @@ class Level:
         self.player_x_collision()
         self.player_y_collision()
         self.player.draw(self.display_surface)
+        self.player_death()
+        self.player_complete()
 
