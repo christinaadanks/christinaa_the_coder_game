@@ -20,17 +20,13 @@ class Level:
         # overall world setup
         self.display_surface = game_surface
         self.display_shift = 0
-        self.current_x = None
+        self.current_x = 0
 
         # player
         player_data = import_csv_data(level_data['player'])
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.Group()
         self.create_player(player_data)
-
-        # background setup
-        background_data = import_csv_data(level_data['background'])
-        self.background_sprites = self.create_tile_group(background_data, 'background')
 
         # terrain setup
         terrain_data = import_csv_data(level_data['terrain'])
@@ -82,11 +78,6 @@ class Level:
                 if col != '-1':
                     x = col_index * TILE_SIZE
                     y = row_index * TILE_SIZE
-
-                    if category == 'background':
-                        bg_tile_list = import_graphics('../graphics_files/backgrounds/backgrounds.png')
-                        bg_surface = bg_tile_list[int(col)]
-                        sprite = GraphicTiles(TILE_SIZE, x, y, bg_surface)
 
                     if category == 'terrain':
                         terrain_tile_list = import_graphics('../graphics_files/terrain/terrain.png')
@@ -198,12 +189,12 @@ class Level:
         """
         Run the level (display the sprites, make sure to put bottom layers first)
         """
-        # background
-        self.background_sprites.update(self.display_shift)
-        self.background_sprites.draw(self.display_surface)
         # terrain
         self.terrain_sprites.update(self.display_shift)
         self.terrain_sprites.draw(self.display_surface)
+        # fruits
+        self.fruit_sprites.update(self.display_shift)
+        self.fruit_sprites.draw(self.display_surface)
         # enemy
         self.enemy_sprites.update(self.display_shift)
         # constraints
@@ -213,9 +204,6 @@ class Level:
         # boxes
         self.box_sprites.update(self.display_shift)
         self.box_sprites.draw(self.display_surface)
-        # fruits
-        self.fruit_sprites.update(self.display_shift)
-        self.fruit_sprites.draw(self.display_surface)
         # players finish line
         self.goal.update(self.display_shift)
         self.goal.draw(self.display_surface)
