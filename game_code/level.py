@@ -142,6 +142,35 @@ class Level:
             self.display_shift = 0
             player.speed = 8
 
+    def player_x_collision(self):
+        player = self.player.sprite
+        player.rect.x += player.direction.x * player.speed
+        # set the sprites that the player can collide with (box + terrain)
+        collision_sprites = self.terrain_sprites.sprites() + self.box_sprites.sprites()
+
+        for sprite in collision_sprites:
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.x < 0:
+                    player.rect.left = sprite.rect.right
+                elif player.direction.x > 0:
+                    player.rect.right = sprite.rect.left
+
+    def player_y_collision(self):
+        player = self.player.sprite
+        player.apply_gravity()
+
+        # set the sprites that the player can collide with (box + terrain)
+        collision_sprites = self.terrain_sprites.sprites() + self.box_sprites.sprites()
+
+        for sprite in collision_sprites:
+            if sprite.rect.colliderect(player.rect):
+                if player.direction.y > 0:
+                    player.rect.bottom = sprite.rect.top
+                    player.direction.y = 0
+                elif player.direction.y < 0:
+                    player.rect.top = sprite.rect.bottom
+                    player.direction.y = 0
+
     def run(self):
         """
         Run the level (display the sprites, make sure to put bottom layers first)
@@ -171,6 +200,11 @@ class Level:
         # players
         self.goal.update(self.display_shift)
         self.goal.draw(self.display_surface)
-        self.player.draw(self.display_surface)
-        self.player.update()
+
         self.move_screen()
+
+        self.player.update()
+        self.player_x_collision()
+        self.player_y_collision()
+        self.player.draw(self.display_surface)
+
