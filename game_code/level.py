@@ -3,6 +3,7 @@ from game_code.imports import import_csv_data, import_graphics
 from game_code.settings import *
 from game_code.tiles import Tile, GraphicTiles, Box, Fruit
 from game_code.enemy import Enemy
+from game_code.player import Player
 
 
 class Level:
@@ -57,7 +58,8 @@ class Level:
                 y = row_index * TILE_SIZE
                 if col != '-1':
                     if col == '4':
-                        print('player here')
+                        player_sprite = Player((x, y))
+                        self.player.add(player_sprite)
                     else:
                         goal_surface_list = import_graphics('../graphics_files/characters/player/end.png')
                         goal_surface = goal_surface_list[int(col)]
@@ -126,6 +128,20 @@ class Level:
             if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
                 enemy.reverse_direction()
 
+    def move_screen(self):
+        player = self.player.sprite
+        player_x = player.rect.centerx
+        direction_x = player.direction.x
+        if player_x < WIDTH / 4 and direction_x < 0:
+            self.display_shift = 8
+            player.speed = 0
+        elif player_x > WIDTH - (WIDTH / 4) and direction_x > 0:
+            self.display_shift = -8
+            player.speed = 0
+        else:
+            self.display_shift = 0
+            player.speed = 8
+
     def run(self):
         """
         Run the level (display the sprites, make sure to put bottom layers first)
@@ -155,3 +171,6 @@ class Level:
         # players
         self.goal.update(self.display_shift)
         self.goal.draw(self.display_surface)
+        self.player.draw(self.display_surface)
+        self.player.update()
+        self.move_screen()
