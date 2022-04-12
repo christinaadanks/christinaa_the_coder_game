@@ -20,6 +20,7 @@ class Level:
         # overall world setup
         self.display_surface = game_surface
         self.display_shift = 0
+        self.current_x = None
 
         # player
         player_data = import_csv_data(level_data['player'])
@@ -58,14 +59,13 @@ class Level:
                 y = row_index * TILE_SIZE
                 if col != '-1':
                     if col == '4':
-                        player_sprite = Player((x, y))
+                        player_sprite = Player((x, y), self.display_surface)
                         self.player.add(player_sprite)
                     else:
                         goal_surface_list = import_graphics('../graphics_files/characters/player/end.png')
                         goal_surface = goal_surface_list[int(col)]
                         sprite = GraphicTiles(TILE_SIZE, x, y, goal_surface)
                         self.goal.add(sprite)
-
 
     def create_tile_group(self, layout, category):
         """
@@ -148,6 +148,7 @@ class Level:
         """
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed
+
         # set the sprites that the player can collide with (box + terrain)
         collision_sprites = self.terrain_sprites.sprites() + self.box_sprites.sprites()
 
@@ -155,8 +156,17 @@ class Level:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
                     player.rect.left = sprite.rect.right
+                    player.on_left = True
+                    self.current_x = player.rect.left
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
+                    player.on_right = True
+                    self.current_x = player.rect.right
+
+        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):
+            player.on_left = False
+        if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
+            player.on_right = False
 
     def player_y_collision(self):
         """
@@ -173,9 +183,16 @@ class Level:
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0
+                    player.on_ground = True
                 elif player.direction.y < 0:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+                    player.on_ceiling = True
+
+        if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
+            player.on_ground = False
+        if player.on_ceiling and player.direction.y > 0:
+            player.on_ceiling = False
 
     def run(self):
         """
@@ -187,28 +204,24 @@ class Level:
         # terrain
         self.terrain_sprites.update(self.display_shift)
         self.terrain_sprites.draw(self.display_surface)
-
         # enemy
         self.enemy_sprites.update(self.display_shift)
         # constraints
         self.constraint_sprites.update(self.display_shift)
         self.enemy_collision()
         self.enemy_sprites.draw(self.display_surface)
-
         # boxes
         self.box_sprites.update(self.display_shift)
         self.box_sprites.draw(self.display_surface)
-
         # fruits
         self.fruit_sprites.update(self.display_shift)
         self.fruit_sprites.draw(self.display_surface)
-
-        # players
+        # players finish line
         self.goal.update(self.display_shift)
         self.goal.draw(self.display_surface)
-
+        # move screen w/ player
         self.move_screen()
-
+        # players
         self.player.update()
         self.player_x_collision()
         self.player_y_collision()

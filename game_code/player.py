@@ -3,9 +3,10 @@ from game_code.imports import import_graphics
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, position):
+    def __init__(self, position, surface):
         super().__init__()
         # animations
+        self.animations = {'player_idle': [], 'player_run': [], 'player_jump': [], 'player_fall': []}
         self.frames = self.import_player_graphics()
         self.frame_index = 0
         self.animation_speed = 0.15
@@ -13,13 +14,18 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=position)
 
         # player functionality
-        self.gravity = 0.95
-        self.jump_speed = -8
+        self.gravity = 0.8
+        self.jump_speed = -15
         self.direction = pygame.math.Vector2(0, 0)
-        self.speed = 4
+        self.speed = 3
 
         # player status
         self.status = 'player_idle'
+        self.direction_right = True
+        self.on_ground = False
+        self.on_ceiling = False
+        self.on_left = False
+        self.on_right = False
 
     def import_player_graphics(self):
         """
@@ -28,7 +34,6 @@ class Player(pygame.sprite.Sprite):
             dictionary of player animations + their graphics
         """
         player_path = '../graphics_files/characters/player/'
-        self.animations = {'player_idle': [], 'player_run': [], 'player_jump': [], 'player_fall': []}
 
         for animation in self.animations.keys():
             full_path = player_path + animation + '.png'
@@ -42,11 +47,33 @@ class Player(pygame.sprite.Sprite):
         """
         animation = self.animations[self.status]
 
+        # iterate through the animation list for the frames
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
             self.frame_index = 0
 
-        self.image = animation[int(self.frame_index)]
+        # reverse image if moving left
+        image = animation[int(self.frame_index)]
+        if self.direction_right:
+            self.image = image
+        else:
+            rev_image = pygame.transform.flip(image, True, False)
+            self.image = rev_image
+
+        # setting the rectangle (possible scenarios for player on the ground
+        if self.on_ground and self.on_right:
+            self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
+        elif self.on_ground and self.on_left:
+            self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
+        elif self.on_ground:
+            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+
+        if self.on_ceiling and self.on_right:
+            self.rect = self.image.get_rect(topright=self.rect.topright)
+        elif self.on_ceiling and self.on_left:
+            self.rect = self.image.get_rect(topleft=self.rect.topleft)
+        elif self.on_ceiling:
+            self.rect = self.image.get_rect(midtop=self.rect.midtop)
 
     def get_input(self):
         """
@@ -57,16 +84,21 @@ class Player(pygame.sprite.Sprite):
         self.direction.x = 0
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.direction_right = True
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.direction_right = False
 
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and self.on_ground:
             self.jump()
 
     def get_status(self):
+        """
+        Get status of what the player is doing dependent on x/y direction
+        """
         if self.direction.y < 0:
             self.status = 'player_jump'
-        elif self.direction.y > 0:
+        elif self.direction.y > 1:
             self.status = 'player_fall'
         else:
             if self.direction.x != 0:
