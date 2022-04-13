@@ -31,7 +31,7 @@ class UI:
         health_bar_rect = pygame.Rect(self.health_bar_tl, (curr_bar_w, self.health_h))
         if curr_ratio > 0.5:
             pygame.draw.rect(self.display_surface, '#7DE500', health_bar_rect)
-        elif 0.5 > curr_ratio > 0.3:
+        elif 0.5 >= curr_ratio > 0.25:
             pygame.draw.rect(self.display_surface, '#FEBF2D', health_bar_rect)
         else:
             pygame.draw.rect(self.display_surface, '#FF4864', health_bar_rect)

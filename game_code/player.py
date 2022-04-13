@@ -127,7 +127,7 @@ class Player(pygame.sprite.Sprite):
 
     def get_damage(self):
         if not self.damage_delay:
-            self.update_health(-10)
+            self.update_health(-100)
             self.damage_delay = True
             self.collision_time = pygame.time.get_ticks()
 

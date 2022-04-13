@@ -47,12 +47,12 @@ class GameMenu:
     """
     Class for the overworld for game/level management
     """
-    def __init__(self, start_level, max_level, surface, create_level):
+    def __init__(self, curr_level, max_level, surface, start_level):
         # overworld setup
         self.display_surface = surface
         self.max_level = max_level
-        self.curr_level = start_level
-        self.create_level = create_level
+        self.curr_level = curr_level
+        self.start_level = start_level
 
         # sprites
         self.nodes = pygame.sprite.Group()
@@ -83,7 +83,7 @@ class GameMenu:
         elif keys[pygame.K_LEFT] and self.curr_level > 0:
             self.curr_level -= 1
         elif keys[pygame.K_SPACE]:
-            self.create_level(self.curr_level)
+            self.start_level(self.curr_level)
 
     def update_icon(self):
         self.icon.sprite.pos = self.nodes.sprites()[self.curr_level].rect.center

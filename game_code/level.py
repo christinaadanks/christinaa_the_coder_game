@@ -14,7 +14,9 @@ class Level:
     Class for handling levels_files
     """
     enemy_status = 'None'
-    def __init__(self, curr_level, surface, open_menu, update_fruits, update_health):
+
+    def __init__(self, curr_level, surface, open_menu, update_fruits, update_health, open_game_over,
+                 update_level):
         """
         Initialize level setup
         Args:
@@ -24,6 +26,10 @@ class Level:
         # overall world setup
         self.open_menu = open_menu
         self.curr_level = curr_level
+        self.update_level = update_level
+
+        # game over setup
+        self.open_game_over = open_game_over
         # get level data
         level_data = levels[self.curr_level]
         self.new_max = level_data['unlock']
@@ -72,8 +78,6 @@ class Level:
 
     def input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_RETURN]:
-            self.open_menu(self.curr_level, self.new_max)
         if keys[pygame.K_ESCAPE]:
             self.open_menu(self.curr_level, 0)
 
@@ -231,11 +235,12 @@ class Level:
 
     def player_death(self):
         if self.player.sprite.rect.top > HEIGHT:
-            self.open_menu(self.curr_level, 0)
+            self.open_game_over(self.curr_level)
 
     def player_complete(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.open_menu(self.curr_level + 1, self.new_max)
+            self.update_level(1)
 
     def fruit_collision(self):
         picked_fruits = pygame.sprite.spritecollide(self.player.sprite, self.fruit_sprites, True)
