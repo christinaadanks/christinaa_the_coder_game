@@ -43,7 +43,7 @@ class Game:
         """
         self.status = 'level'
         new_screen = self.screen_dimensions()
-        self.level = Level(curr_level, new_screen, self.open_menu, self.update_fruits)
+        self.level = Level(curr_level, new_screen, self.open_menu, self.update_fruits, self.update_health)
 
     def open_menu(self, curr_level, new_max_level):
         """
@@ -60,6 +60,9 @@ class Game:
 
     def update_fruits(self, balance):
         self.fruits += balance
+
+    def update_health(self, amount):
+        self.curr_health += amount
 
     def run(self):
         """

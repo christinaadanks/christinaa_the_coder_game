@@ -3,10 +3,10 @@ from game_code.imports import import_graphics
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, position, surface):
+    def __init__(self, position, surface, update_health):
         super().__init__()
         # animations
-        self.animations = {'player_idle': [], 'player_run': [], 'player_jump': [], 'player_fall': []}
+        self.animations = {'player_idle': [], 'player_run': [], 'player_jump': [], 'player_fall': [], 'player_hit': []}
         self.frames = self.import_player_graphics()
         self.frame_index = 0
         self.animation_speed = 0.15
@@ -18,6 +18,10 @@ class Player(pygame.sprite.Sprite):
         self.jump_speed = -15
         self.direction = pygame.math.Vector2(0, 0)
         self.speed = 3
+        self.update_health = update_health
+        self.damage_delay = False
+        self.damage_delay_duration = 1000
+        self.collision_time = 0
 
         # player status
         self.status = 'player_idle'
@@ -96,7 +100,9 @@ class Player(pygame.sprite.Sprite):
         """
         Get status of what the player is doing dependent on x/y direction
         """
-        if self.direction.y < 0:
+        if self.damage_delay:
+            self.status = 'player_hit'
+        elif self.direction.y < 0:
             self.status = 'player_jump'
         elif self.direction.y > 1:
             self.status = 'player_fall'
@@ -119,7 +125,20 @@ class Player(pygame.sprite.Sprite):
         """
         self.direction.y = self.jump_speed
 
+    def get_damage(self):
+        if not self.damage_delay:
+            self.update_health(-10)
+            self.damage_delay = True
+            self.collision_time = pygame.time.get_ticks()
+
+    def damage_timer(self):
+        if self.damage_delay:
+            curr_time = pygame.time.get_ticks()
+            if curr_time - self.collision_time >= self.damage_delay_duration:
+                self.damage_delay = False
+
     def update(self):
         self.get_input()
         self.get_status()
         self.animate()
+        self.damage_timer()

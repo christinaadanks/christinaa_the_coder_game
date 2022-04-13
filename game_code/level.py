@@ -14,7 +14,7 @@ class Level:
     Class for handling levels_files
     """
     enemy_status = 'None'
-    def __init__(self, curr_level, surface, open_menu, update_fruits):
+    def __init__(self, curr_level, surface, open_menu, update_fruits, update_health):
         """
         Initialize level setup
         Args:
@@ -37,7 +37,7 @@ class Level:
         player_data = import_csv_data(level_data['player'])
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.Group()
-        self.create_player(player_data)
+        self.create_player(player_data, update_health)
 
         # UI
         self.update_fruits = update_fruits
@@ -79,14 +79,14 @@ class Level:
 
     ######################## GRAPHICS ########################
 
-    def create_player(self, layout):
+    def create_player(self, layout, update_health):
         for row_index, row in enumerate(layout):
             for col_index, col in enumerate(row):
                 x = col_index * TILE_SIZE
                 y = row_index * TILE_SIZE
                 if col != '-1':
                     if col == '4':
-                        player_sprite = Player((x, y), self.display_surface)
+                        player_sprite = Player((x, y), self.display_surface, update_health)
                         self.player.add(player_sprite)
                     else:
                         goal_surface_list = import_graphics('../graphics_files/characters/player/end.png')
@@ -264,6 +264,8 @@ class Level:
                         hit_sprite = Particle(enemy.rect.center, 'rabbit_hit')
                     self.hit_sprites.add(hit_sprite)
                     enemy.kill()
+                else:
+                    self.player.sprite.get_damage()
 
     def run(self):
         """
