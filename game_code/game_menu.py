@@ -27,13 +27,13 @@ class Icon(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         self.pos = pos
-        self.frames = import_graphics('../graphics_files/fruits/Melon.png')
+        self.frames = import_graphics('../graphics_files/fruits/Cherries.png')
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(center=pos)
 
     def animate(self):
-        self.frame_index += 0.15
+        self.frame_index += 1
         if self.frame_index >= len(self.frames):
             self.frame_index = 0
         self.image = self.frames[int(self.frame_index)]
@@ -75,6 +75,8 @@ class GameMenu:
         self.icon.add(icon_sprite)
 
     def input(self):
+        clock = pygame.time.Clock()
+        clock.tick(10)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT] and self.curr_level < self.max_level:
             self.curr_level += 1

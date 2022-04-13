@@ -1,5 +1,6 @@
 import pygame
 from game_code.imports import import_csv_data, import_graphics
+from game_code.particles import Particle
 from game_code.settings import *
 from game_code.tiles import Tile, GraphicTiles, Box, Fruit
 from game_code.enemy import Enemy
@@ -12,7 +13,8 @@ class Level:
     """
     Class for handling levels_files
     """
-    def __init__(self, curr_level, surface, open_menu):
+    enemy_status = 'None'
+    def __init__(self, curr_level, surface, open_menu, update_fruits):
         """
         Initialize level setup
         Args:
@@ -36,6 +38,12 @@ class Level:
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.Group()
         self.create_player(player_data)
+
+        # UI
+        self.update_fruits = update_fruits
+
+        # hit particles
+        self.hit_sprites = pygame.sprite.Group()
 
         # terrain setup
         terrain_data = import_csv_data(level_data['terrain'])
@@ -68,6 +76,8 @@ class Level:
             self.open_menu(self.curr_level, self.new_max)
         if keys[pygame.K_ESCAPE]:
             self.open_menu(self.curr_level, 0)
+
+    ######################## GRAPHICS ########################
 
     def create_player(self, layout):
         for row_index, row in enumerate(layout):
@@ -110,42 +120,41 @@ class Level:
 
                     if category == 'fruits':
                         if col == '0':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Apple.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Apple.png', 1)
                         if col == '17':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Bananas.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Bananas.png', 2)
                         if col == '34':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Cherries.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Cherries.png', 2)
                         if col == '51':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Kiwi.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Kiwi.png', 2)
                         if col == '68':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Melon.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Melon.png', 1)
                         if col == '85':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Orange.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Orange.png', 1)
                         if col == '102':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Pineapple.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Pineapple.png', 1)
                         if col == '119':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Strawberry.png')
+                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Strawberry.png', 1)
 
                     if category == 'enemies':
                         if col == '1':
                             sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/slime_enemy.png')
+                            self.enemy_status = 'slime'
                         if col == '2':
                             sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/duck_enemy.png')
+                            self.enemy_status = 'duck'
                         if col == '3':
                             sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/ghost_enemy.png')
+                            self.enemy_status = 'ghost'
                         if col == '4':
                             sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/rabbit_enemy.png')
+                            self.enemy_status = 'rabbit'
 
                     if category == 'constraints':
                         sprite = Tile(TILE_SIZE, x, y)
 
                     sprite_group.add(sprite)
         return sprite_group
-
-    def enemy_collision(self):
-        for enemy in self.enemy_sprites.sprites():
-            if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
-                enemy.reverse_direction()
 
     def move_screen(self):
         player = self.player.sprite
@@ -160,6 +169,13 @@ class Level:
         else:
             self.display_shift = 0
             player.speed = 8
+
+    ######################## COLLISIONS ########################
+
+    def enemy_collision(self):
+        for enemy in self.enemy_sprites.sprites():
+            if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
+                enemy.reverse_direction()
 
     def player_x_collision(self):
         """
@@ -221,6 +237,34 @@ class Level:
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.open_menu(self.curr_level + 1, self.new_max)
 
+    def fruit_collision(self):
+        picked_fruits = pygame.sprite.spritecollide(self.player.sprite, self.fruit_sprites, True)
+        if picked_fruits:
+            for fruit in picked_fruits:
+                self.update_fruits(fruit.value)
+
+    def player_enemy_collision(self):
+        enemy_collide = pygame.sprite.spritecollide(self.player.sprite, self.enemy_sprites, False)
+        if enemy_collide:
+            for enemy in enemy_collide:
+                enemy_center = enemy.rect.centery
+                enemy_top = enemy.rect.top
+                player_bottom = self.player.sprite.rect.bottom
+                # ranges for enemy kill/player injury
+                if enemy_top < player_bottom < enemy_center and self.player.sprite.direction.y >= 0:
+                    # bounce player after kill
+                    self.player.sprite.direction.y = -10
+                    if self.enemy_status == 'slime':
+                        hit_sprite = Particle(enemy.rect.center, 'slime_hit')
+                    if self.enemy_status == 'duck':
+                        hit_sprite = Particle(enemy.rect.center, 'duck_hit')
+                    if self.enemy_status == 'ghost':
+                        hit_sprite = Particle(enemy.rect.center, 'ghost_hit')
+                    if self.enemy_status == 'rabbit':
+                        hit_sprite = Particle(enemy.rect.center, 'rabbit_hit')
+                    self.hit_sprites.add(hit_sprite)
+                    enemy.kill()
+
     def run(self):
         """
         Run the level (display the sprites, make sure to put bottom layers first)
@@ -237,6 +281,8 @@ class Level:
         self.fruit_sprites.draw(self.display_surface)
         # enemy
         self.enemy_sprites.update(self.display_shift)
+        self.hit_sprites.update(self.display_shift)
+        self.hit_sprites.draw(self.display_surface)
         # constraints
         self.constraint_sprites.update(self.display_shift)
         self.enemy_collision()
@@ -254,5 +300,8 @@ class Level:
         self.player_x_collision()
         self.player_y_collision()
         self.player.draw(self.display_surface)
+        # collisions
         self.player_death()
         self.player_complete()
+        self.fruit_collision()
+        self.player_enemy_collision()

@@ -7,7 +7,7 @@ class Enemy(AnimatedTile):
     def __init__(self, size, x, y, path):
         super().__init__(size, x, y, path)
         # use random speed for enemy
-        self.speed = randint(2, 4)
+        self.speed = randint(1, 3)
 
     def move(self):
         """

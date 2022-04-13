@@ -18,7 +18,7 @@ level_1 = {
     'enemies': '../levels_files/level_1/level_1_enemy.csv',
     'constraints': '../levels_files/level_1/level_1_constraints.csv',
     'player': '../levels_files/level_1/level_1_player.csv',
-    'node': (64, 32),
+    'node': (96, 32),
     'unlock': 2,
     'level_graphics': '../graphics_files/menu/levels/02.png'
 }
@@ -30,7 +30,7 @@ level_2 = {
     'enemies': '../levels_files/level_2/level_2_enemy.csv',
     'constraints': '../levels_files/level_2/level_2_constraints.csv',
     'player': '../levels_files/level_2/level_2_player.csv',
-    'node': (96, 32),
+    'node': (160, 32),
     'unlock': 3,
     'level_graphics': '../graphics_files/menu/levels/03.png'
 }
@@ -42,7 +42,7 @@ level_3 = {
     'enemies': '../levels_files/level_3/level_3_enemy.csv',
     'constraints': '../levels_files/level_3/level_3_constraints.csv',
     'player': '../levels_files/level_3/level_3_player.csv',
-    'node': (128, 32),
+    'node': (225, 32),
     'unlock': 3,
     'level_graphics': '../graphics_files/menu/levels/04.png'
 }
