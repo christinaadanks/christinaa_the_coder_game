@@ -1,7 +1,10 @@
 import sys
+import time
+
 import pygame
 
 from game_code.game_over import GameOver
+from game_code.music import Music
 from game_code.settings import *
 from game_code.level import Level
 from game_code.game_menu import GameMenu
@@ -16,13 +19,13 @@ class Game:
         # sounds
         self.menu_music = pygame.mixer.Sound('../sounds/menu.mp3')
         self.menu_music.set_volume(0.75)
-        self.level_music = pygame.mixer.Sound('../sounds/level.mp3')
-        self.level_music.set_volume(0.75)
+        self.level_music = Music()
+        self.death_sound = pygame.mixer.Sound('../sounds/death.wav')
 
         # main game
         self.level = None
         self.status = 'game_menu'
-        self.max_level = 1
+        self.max_level = 3
         self.game_menu = GameMenu(0, self.max_level, screen, self.start_level)
         self.menu_music.play(loops=-1)
         self.game_over = None
@@ -52,8 +55,8 @@ class Game:
         Args:
             curr_level: current level
         """
-        self.level_music.stop()
         self.menu_music.stop()
+        self.level_music.stop()
         self.level_music.play()
         if self.curr_health < 100:
             self.curr_health = 100
@@ -62,7 +65,7 @@ class Game:
         self.status = 'level'
         new_screen = self.screen_dimensions()
         self.level = Level(curr_level, new_screen, self.open_menu, self.update_fruits, self.update_health,
-                           self.open_game_over, self.update_level, self.level_music)
+                           self.open_game_over, self.update_level)
 
     def open_menu(self, curr_level, new_max_level):
         """
@@ -80,6 +83,8 @@ class Game:
         self.menu_music.play(loops=-1)
 
     def open_game_over(self, curr_level):
+        time.sleep(2)
+        self.level_music.unpause()
         self.status = 'game_over'
         new_screen = self.screen_dimensions()
         self.game_over = GameOver(curr_level, new_screen, self.start_level, self.open_menu)
@@ -106,6 +111,8 @@ class Game:
             self.ui.display_health(self.curr_health, self.max_health)
             self.ui.display_fruits(self.fruits)
             if self.curr_health <= 0:
+                self.level_music.pause()
+                self.death_sound.play()
                 self.open_game_over(self.curr_level)
 
 
