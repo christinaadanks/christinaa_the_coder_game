@@ -5,6 +5,13 @@ from game_code.settings import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, position, surface, update_health):
+        """
+        Initialize the player
+        Args:
+            position: position of player
+            surface: screen place is to be displayed on
+            update_health: health of the player
+        """
         super().__init__()
         # sounds
         self.hit_sound = pygame.mixer.Sound('../sounds/hit.wav')
@@ -129,6 +136,9 @@ class Player(pygame.sprite.Sprite):
         self.direction.y = self.jump_speed
 
     def get_damage(self):
+        """
+        Get damage done to player when collision with enemy
+        """
         if not self.damage_delay:
             self.hit_sound.play()
             self.update_health(-10)
@@ -136,6 +146,9 @@ class Player(pygame.sprite.Sprite):
             self.collision_time = pygame.time.get_ticks()
 
     def damage_timer(self):
+        """
+        Timer until damage can be given again (not while flashing)
+        """
         if self.damage_delay:
             curr_time = pygame.time.get_ticks()
             if curr_time - self.collision_time >= self.damage_delay_duration:

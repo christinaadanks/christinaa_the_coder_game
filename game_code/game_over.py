@@ -8,6 +8,14 @@ class GameOver:
     Class for game over state
     """
     def __init__(self, curr_level, surface, start_level, open_menu):
+        """
+        Initialize game over set up
+        Args:
+            curr_level: current level (level you died on)
+            surface: screen to be displayed on
+            start_level: start the level if Y is clicked
+            open_menu: open menu page if N is clicked
+        """
         # game over setup
         self.display_surface = surface
         self.start_level = start_level
@@ -23,6 +31,9 @@ class GameOver:
         self.play_again_rect = self.play_again_surf.get_rect(topleft=(380, 100))
 
     def input(self):
+        """
+        Keyboard input for game over page
+        """
         keys = pygame.key.get_pressed()
         if keys[pygame.K_y]:
             self.start_level(self.curr_level)

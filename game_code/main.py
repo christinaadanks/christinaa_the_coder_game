@@ -18,14 +18,14 @@ class Game:
     def __init__(self):
         # sounds
         self.menu_music = pygame.mixer.Sound('../sounds/menu.mp3')
-        self.menu_music.set_volume(0.75)
+        self.menu_music.set_volume(0.5)
         self.level_music = Music()
         self.death_sound = pygame.mixer.Sound('../sounds/death.wav')
 
         # main game
         self.level = None
         self.status = 'game_menu'
-        self.max_level = 3
+        self.max_level = 0
         self.game_menu = GameMenu(0, self.max_level, screen, self.start_level)
         self.menu_music.play(loops=-1)
         self.game_over = None

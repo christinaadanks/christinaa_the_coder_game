@@ -14,7 +14,7 @@ from game_code.backgrounds import Background, Clouds
 
 class Level:
     """
-    Class for handling levels_files
+    Class for game levels
     """
     enemy_status = 'None'
 
@@ -89,6 +89,9 @@ class Level:
         self.clouds = Clouds(200, w, 25)
 
     def input(self):
+        """
+        Keyboard input (escape to leave the level and open game menu)
+        """
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
             self.open_menu(self.curr_level, 0)
@@ -96,6 +99,12 @@ class Level:
     ######################## GRAPHICS ########################
 
     def create_player(self, layout, update_health):
+        """
+        Create the player
+        Args:
+            layout: player data
+            update_health: health of the player
+        """
         for row_index, row in enumerate(layout):
             for col_index, col in enumerate(row):
                 x = col_index * TILE_SIZE
@@ -173,6 +182,9 @@ class Level:
         return sprite_group
 
     def move_screen(self):
+        """
+        Move the screen with the player, left and right
+        """
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x
@@ -189,6 +201,9 @@ class Level:
     ######################## COLLISIONS ########################
 
     def enemy_collision(self):
+        """
+        Enemy collision with the terrain + constraints
+        """
         for enemy in self.enemy_sprites.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
                 enemy.reverse_direction()
@@ -249,12 +264,18 @@ class Level:
             player.on_ceiling = False
 
     def player_death(self):
+        """
+        Player death by falling off (health handled in main.py)
+        """
         if self.player.sprite.rect.top > HEIGHT:
             self.level_music.pause()
             self.death_sound.play()
             self.open_game_over(self.curr_level)
 
     def player_complete(self):
+        """
+        Player reaches trophy checkpoint, move up to next level
+        """
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.level_music.pause()
             self.win_sound.play()
@@ -266,6 +287,9 @@ class Level:
             self.update_level(1)
 
     def fruit_collision(self):
+        """
+        Player collision with fruits to collect
+        """
         picked_fruits = pygame.sprite.spritecollide(self.player.sprite, self.fruit_sprites, True)
         if picked_fruits:
             self.fruit_sounds.play()
@@ -273,6 +297,9 @@ class Level:
                 self.update_fruits(fruit.value)
 
     def player_enemy_collision(self):
+        """
+        Player collision with enemies (jump to kill/run into to get hit)
+        """
         enemy_collide = pygame.sprite.spritecollide(self.player.sprite, self.enemy_sprites, False)
         if enemy_collide:
             for enemy in enemy_collide:

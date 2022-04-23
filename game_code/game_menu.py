@@ -3,7 +3,6 @@ import pygame
 from game_code.backgrounds import Background
 from game_code.game_data import levels
 from game_code.imports import import_graphics
-from game_code.settings import *
 
 
 class Node(pygame.sprite.Sprite):

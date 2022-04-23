@@ -5,6 +5,12 @@ from game_code.imports import import_graphics
 
 class Particle(pygame.sprite.Sprite):
     def __init__(self, pos, category):
+        """
+        Initialize particles set up
+        Args:
+            pos: position of the particle
+            category: category of enemy
+        """
         super().__init__()
         self.frame_index = 0
         self.animation_speed = 0.5
@@ -20,6 +26,9 @@ class Particle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
 
     def animate(self):
+        """
+        Particle animation
+        """
         self.frame_index += self.animation_speed
         if self.frame_index >= len(self.frames):
             self.kill()
