@@ -3,6 +3,7 @@ import pygame
 from game_code.backgrounds import Background
 from game_code.game_data import levels
 from game_code.imports import import_graphics
+from game_code.settings import *
 
 
 class Node(pygame.sprite.Sprite):
@@ -61,7 +62,25 @@ class GameMenu:
         self.setup_nodes()
         self.setup_icon()
 
+        # directions for game menu
+        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 8)
+        self.dir_surf = self.font.render('press SPACE or ENTER to begin level', True, 'black')
+        self.dir_rect = self.dir_surf.get_rect(center=(160, 80))
+        self.dir_surf2 = self.font.render('press ESC to exit level & return to menu', True, 'black')
+        self.dir_rect2 = self.dir_surf.get_rect(center=(160, 90))
+        self.dir_surf3 = self.font.render('use left & right arrows to move player', True, 'black')
+        self.dir_rect3 = self.dir_surf.get_rect(center=(160, 110))
+        self.dir_surf4 = self.font.render('press space to jump', True, 'black')
+        self.dir_rect4 = self.dir_surf.get_rect(center=(160, 120))
+        self.dir_surf5 = self.font.render('goal is to collect fruits & reach trophy checkpoint', True, 'black')
+        self.dir_rect5 = self.dir_surf.get_rect(center=(160, 130))
+        self.dir_surf6 = self.font.render('player dies if they fall off or lose all health', True, 'black')
+        self.dir_rect6 = self.dir_surf.get_rect(center=(160, 140))
+
     def setup_nodes(self):
+        """
+        Setup for the level nodes
+        """
         for index, node_val in enumerate(levels.values()):
             if index <= self.max_level:
                 node_sprite = Node(node_val['node'], 'unlocked', node_val['level_graphics'])
@@ -71,10 +90,16 @@ class GameMenu:
             self.nodes.add(node_sprite)
 
     def setup_icon(self):
+        """
+        Set up the icons for the levels
+        """
         icon_sprite = Icon(self.nodes.sprites()[self.curr_level].rect.center)
         self.icon.add(icon_sprite)
 
     def input(self):
+        """
+        Input for moving the cherry (left/right to move from level to leve, space OR return to play level)
+        """
         clock = pygame.time.Clock()
         clock.tick(10)
         keys = pygame.key.get_pressed()
@@ -83,6 +108,8 @@ class GameMenu:
         elif keys[pygame.K_LEFT] and self.curr_level > 0:
             self.curr_level -= 1
         elif keys[pygame.K_SPACE]:
+            self.start_level(self.curr_level)
+        elif keys[pygame.K_RETURN]:
             self.start_level(self.curr_level)
 
     def update_icon(self):
@@ -96,3 +123,9 @@ class GameMenu:
         self.nodes.update()
         self.nodes.draw(self.display_surface)
         self.icon.draw(self.display_surface)
+        self.display_surface.blit(self.dir_surf, self.dir_rect)
+        self.display_surface.blit(self.dir_surf2, self.dir_rect2)
+        self.display_surface.blit(self.dir_surf3, self.dir_rect3)
+        self.display_surface.blit(self.dir_surf4, self.dir_rect4)
+        self.display_surface.blit(self.dir_surf5, self.dir_rect5)
+        self.display_surface.blit(self.dir_surf6, self.dir_rect6)

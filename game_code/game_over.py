@@ -21,9 +21,6 @@ class GameOver:
         self.play_again_surf = self.font.render('PLAY AGAIN? y/n', True, 'white')
         self.play_again_rect = self.play_again_surf.get_rect(topleft=(380, 100))
 
-    def play_again(self):
-        pass
-
     def input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_y]:

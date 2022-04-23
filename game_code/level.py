@@ -1,3 +1,5 @@
+import time
+
 import pygame
 from game_code.imports import import_csv_data, import_graphics
 from game_code.particles import Particle
@@ -16,13 +18,21 @@ class Level:
     enemy_status = 'None'
 
     def __init__(self, curr_level, surface, open_menu, update_fruits, update_health, open_game_over,
-                 update_level):
+                 update_level, level_music):
         """
         Initialize level setup
         Args:
             level_data: level data path we are importing from Tiled CSV file
             game_surface: screen the game_code is to be displayed on
         """
+        # game sounds
+        self.fruit_sounds = pygame.mixer.Sound('../sounds/coin.wav')
+        self.fruit_sounds.set_volume(0.5)
+        self.win_sound = pygame.mixer.Sound('../sounds/win.wav')
+        self.kill_sound = pygame.mixer.Sound('../sounds/kill.mp3')
+        self.death_sound = pygame.mixer.Sound('../sounds/death.wav')
+        self.level_music = level_music
+
         # overall world setup
         self.open_menu = open_menu
         self.curr_level = curr_level
@@ -217,6 +227,9 @@ class Level:
         # set the sprites that the player can collide with (box + terrain)
         collision_sprites = self.terrain_sprites.sprites() + self.box_sprites.sprites()
 
+        if player.rect.top <= 0:
+            player.rect.top = 1
+
         for sprite in collision_sprites:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
@@ -235,16 +248,22 @@ class Level:
 
     def player_death(self):
         if self.player.sprite.rect.top > HEIGHT:
+            self.level_music.stop()
+            self.death_sound.play()
             self.open_game_over(self.curr_level)
 
     def player_complete(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
+            self.level_music.stop()
+            self.win_sound.play()
+            time.sleep(2)
             self.open_menu(self.curr_level + 1, self.new_max)
             self.update_level(1)
 
     def fruit_collision(self):
         picked_fruits = pygame.sprite.spritecollide(self.player.sprite, self.fruit_sprites, True)
         if picked_fruits:
+            self.fruit_sounds.play()
             for fruit in picked_fruits:
                 self.update_fruits(fruit.value)
 
@@ -257,6 +276,7 @@ class Level:
                 player_bottom = self.player.sprite.rect.bottom
                 # ranges for enemy kill/player injury
                 if enemy_top < player_bottom < enemy_center and self.player.sprite.direction.y >= 0:
+                    self.kill_sound.play()
                     # bounce player after kill
                     self.player.sprite.direction.y = -10
                     if self.enemy_status == 'slime':

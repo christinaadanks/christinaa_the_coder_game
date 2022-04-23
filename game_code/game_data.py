@@ -6,7 +6,7 @@ level_0 = {
     'enemies': '../levels_files/level_0/level_0_enemy.csv',
     'constraints': '../levels_files/level_0/level_0_constraints.csv',
     'player': '../levels_files/level_0/level_0_player.csv',
-    'node': (32,32),
+    'node': (32, 32),
     'unlock': 1,
     'level_graphics': '../graphics_files/menu/levels/01.png'
 }

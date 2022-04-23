@@ -1,10 +1,13 @@
 import pygame
 from game_code.imports import import_graphics
+from game_code.settings import *
 
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, position, surface, update_health):
         super().__init__()
+        # sounds
+        self.hit_sound = pygame.mixer.Sound('../sounds/hit.wav')
         # animations
         self.animations = {'player_idle': [], 'player_run': [], 'player_jump': [], 'player_fall': [], 'player_hit': []}
         self.frames = self.import_player_graphics()
@@ -15,7 +18,7 @@ class Player(pygame.sprite.Sprite):
 
         # player functionality
         self.gravity = 0.8
-        self.jump_speed = -15
+        self.jump_speed = -13
         self.direction = pygame.math.Vector2(0, 0)
         self.speed = 3
         self.update_health = update_health
@@ -127,7 +130,8 @@ class Player(pygame.sprite.Sprite):
 
     def get_damage(self):
         if not self.damage_delay:
-            self.update_health(-100)
+            self.hit_sound.play()
+            self.update_health(-10)
             self.damage_delay = True
             self.collision_time = pygame.time.get_ticks()
 

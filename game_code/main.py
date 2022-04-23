@@ -13,11 +13,18 @@ class Game:
     Class for the main game
     """
     def __init__(self):
+        # sounds
+        self.menu_music = pygame.mixer.Sound('../sounds/menu.mp3')
+        self.menu_music.set_volume(0.75)
+        self.level_music = pygame.mixer.Sound('../sounds/level.mp3')
+        self.level_music.set_volume(0.75)
+
         # main game
         self.level = None
         self.status = 'game_menu'
-        self.max_level = 0
+        self.max_level = 1
         self.game_menu = GameMenu(0, self.max_level, screen, self.start_level)
+        self.menu_music.play(loops=-1)
         self.game_over = None
 
         # player statuses
@@ -45,6 +52,9 @@ class Game:
         Args:
             curr_level: current level
         """
+        self.level_music.stop()
+        self.menu_music.stop()
+        self.level_music.play()
         if self.curr_health < 100:
             self.curr_health = 100
         if self.fruits > 0:
@@ -52,7 +62,7 @@ class Game:
         self.status = 'level'
         new_screen = self.screen_dimensions()
         self.level = Level(curr_level, new_screen, self.open_menu, self.update_fruits, self.update_health,
-                           self.open_game_over, self.update_level)
+                           self.open_game_over, self.update_level, self.level_music)
 
     def open_menu(self, curr_level, new_max_level):
         """
@@ -61,11 +71,13 @@ class Game:
             curr_level: current level
             new_max_level: max level (unlocks new levels each time you win)
         """
+        self.level_music.stop()
         self.status = 'game_menu'
         new_screen = self.screen_dimensions()
         if new_max_level > self.max_level:
             self.max_level = new_max_level
         self.game_menu = GameMenu(curr_level, self.max_level, new_screen, self.start_level)
+        self.menu_music.play(loops=-1)
 
     def open_game_over(self, curr_level):
         self.status = 'game_over'
