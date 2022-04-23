@@ -25,7 +25,7 @@ class Game:
         # main game
         self.level = None
         self.status = 'game_menu'
-        self.max_level = 0
+        self.max_level = 1
         self.game_menu = GameMenu(0, self.max_level, screen, self.start_level)
         self.menu_music.play(loops=-1)
         self.game_over = None
@@ -122,7 +122,7 @@ pygame.init()
 screen = pygame.display.set_mode((int(WIDTH/2), HEIGHT))
 clock = pygame.time.Clock()
 # set title of game
-pygame.display.set_caption("Christinaa The Pink Coder")
+pygame.display.set_caption("🍒 the pink coder")
 # create game
 game = Game()
 

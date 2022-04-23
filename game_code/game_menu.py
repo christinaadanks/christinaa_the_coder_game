@@ -75,6 +75,9 @@ class GameMenu:
         self.dir_rect5 = self.dir_surf.get_rect(center=(160, 130))
         self.dir_surf6 = self.font.render('player dies if they fall off or lose all health', True, 'black')
         self.dir_rect6 = self.dir_surf.get_rect(center=(160, 140))
+        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 12)
+        self.quit_surf = self.font.render('press ESC to quit', True, 'black')
+        self.quit_rect = self.dir_surf.get_rect(center=(260, 300))
 
     def setup_nodes(self):
         """
@@ -110,6 +113,8 @@ class GameMenu:
             self.start_level(self.curr_level)
         elif keys[pygame.K_RETURN]:
             self.start_level(self.curr_level)
+        elif keys[pygame.K_ESCAPE]:
+            pygame.quit()
 
     def update_icon(self):
         self.icon.sprite.pos = self.nodes.sprites()[self.curr_level].rect.center
@@ -128,3 +133,4 @@ class GameMenu:
         self.display_surface.blit(self.dir_surf4, self.dir_rect4)
         self.display_surface.blit(self.dir_surf5, self.dir_rect5)
         self.display_surface.blit(self.dir_surf6, self.dir_rect6)
+        self.display_surface.blit(self.quit_surf, self.quit_rect)
