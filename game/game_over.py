@@ -1,6 +1,6 @@
 import pygame
 
-from game_code.settings import *
+from game.settings import *
 
 
 class GameOver:

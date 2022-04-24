@@ -3,12 +3,12 @@ import time
 
 import pygame
 
-from game_code.game_over import GameOver
-from game_code.music import Music
-from game_code.settings import *
-from game_code.level import Level
-from game_code.game_menu import GameMenu
-from game_code.ui import UI
+from game.game_over import GameOver
+from game.music import Music
+from game.settings import *
+from game.level import Level
+from game.game_menu import GameMenu
+from game.ui import UI
 
 
 class Game:

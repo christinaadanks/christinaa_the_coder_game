@@ -1,8 +1,8 @@
 import pygame
 
-from game_code.backgrounds import Background
-from game_code.game_data import levels
-from game_code.imports import import_graphics
+from game.backgrounds import Background
+from game.game_data import levels
+from game.imports import import_graphics
 
 
 class Node(pygame.sprite.Sprite):

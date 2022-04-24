@@ -1,15 +1,15 @@
 import time
 
 import pygame
-from game_code.imports import import_csv_data, import_graphics
-from game_code.music import Music
-from game_code.particles import Particle
-from game_code.settings import *
-from game_code.tiles import Tile, GraphicTiles, Box, Fruit
-from game_code.enemy import Enemy
-from game_code.player import Player
-from game_code.game_data import levels
-from game_code.backgrounds import Background, Clouds
+from game.imports import import_csv_data, import_graphics
+from game.music import Music
+from game.particles import Particle
+from game.settings import *
+from game.tiles import Tile, GraphicTiles, Box, Fruit
+from game.enemy import Enemy
+from game.player import Player
+from game.game_data import levels
+from game.backgrounds import Background, Clouds
 
 
 class Level:
@@ -24,7 +24,7 @@ class Level:
         Initialize level setup
         Args:
             level_data: level data path we are importing from Tiled CSV file
-            game_surface: screen the game_code is to be displayed on
+            game_surface: screen the game is to be displayed on
         """
         # game sounds
         self.fruit_sounds = pygame.mixer.Sound('../sounds/coin.wav')

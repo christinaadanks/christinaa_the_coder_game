@@ -1,7 +1,7 @@
 import pygame
-from game_code.settings import *
+from game.settings import *
 from random import choice, randint
-from game_code.tiles import GraphicTiles
+from game.tiles import GraphicTiles
 
 
 class Background:

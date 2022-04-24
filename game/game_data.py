@@ -1,4 +1,4 @@
-# game_code data for levels (imported from Tiled)
+# game data for levels (imported from Tiled)
 level_0 = {
     'terrain': '../levels_files/level_0/level_0_terrain.csv',
     'boxes': '../levels_files/level_0/level_0_boxes.csv',

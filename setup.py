@@ -17,7 +17,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "game_code"},
-    packages=setuptools.find_packages(where="game_code"),
+    package_dir={"": "game"},
+    packages=setuptools.find_packages(where="game"),
     python_requires=">=3.6",
 )

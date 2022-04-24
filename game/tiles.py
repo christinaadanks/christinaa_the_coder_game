@@ -1,5 +1,5 @@
 import pygame
-from imports import import_graphics
+from game.imports import import_graphics
 
 
 class Tile(pygame.sprite.Sprite):

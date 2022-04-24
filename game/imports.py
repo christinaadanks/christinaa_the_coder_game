@@ -1,6 +1,6 @@
 from csv import reader
 import pygame
-from game_code.settings import *
+from game.settings import *
 
 
 def import_csv_data(path):

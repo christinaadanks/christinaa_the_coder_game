@@ -1,6 +1,6 @@
 import pygame
 
-from game_code.imports import import_graphics
+from game.imports import import_graphics
 
 
 class Particle(pygame.sprite.Sprite):

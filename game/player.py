@@ -1,6 +1,5 @@
 import pygame
-from game_code.imports import import_graphics
-from game_code.settings import *
+from game.imports import import_graphics
 
 
 class Player(pygame.sprite.Sprite):
