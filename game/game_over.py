@@ -23,10 +23,10 @@ class GameOver:
         self.curr_level = curr_level
 
         # game over display
-        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 20)
+        self.font = pygame.font.Font('graphics_files/font/emu.ttf', 20)
         self.game_over_surf = self.font.render('GAME OVER', True, 'white')
         self.game_over_rect = self.game_over_surf.get_rect(center=(WIDTH / 2, HEIGHT / 2))
-        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 10)
+        self.font = pygame.font.Font('graphics_files/font/emu.ttf', 10)
         self.play_again_surf = self.font.render('PLAY AGAIN? y/n', True, 'white')
         self.play_again_rect = self.play_again_surf.get_rect(topleft=(380, 100))
 

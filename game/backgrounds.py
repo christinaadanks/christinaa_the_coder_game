@@ -6,7 +6,7 @@ from game.tiles import GraphicTiles
 
 class Background:
     def __init__(self):
-        self.image = pygame.image.load('../graphics_files/backgrounds/sky.png')
+        self.image = pygame.image.load('graphics_files/backgrounds/sky.png')
         self.image = pygame.transform.scale(self.image, (WIDTH, HEIGHT))
 
     def draw(self, surface):
@@ -16,9 +16,9 @@ class Background:
 class Clouds:
     def __init__(self, ground, width, clouds):
         cloud_list = []
-        image1 = pygame.image.load('../graphics_files/backgrounds/cloud1.png')
-        image2 = pygame.image.load('../graphics_files/backgrounds/cloud2.png')
-        image3 = pygame.image.load('../graphics_files/backgrounds/cloud3.png')
+        image1 = pygame.image.load('graphics_files/backgrounds/cloud1.png')
+        image2 = pygame.image.load('graphics_files/backgrounds/cloud2.png')
+        image3 = pygame.image.load('graphics_files/backgrounds/cloud3.png')
         cloud_list.append(image1)
         cloud_list.append(image2)
         cloud_list.append(image3)

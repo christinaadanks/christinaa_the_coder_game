@@ -17,10 +17,10 @@ class Game:
     """
     def __init__(self):
         # sounds
-        self.menu_music = pygame.mixer.Sound('../sounds/menu.mp3')
+        self.menu_music = pygame.mixer.Sound('sounds/menu.mp3')
         self.menu_music.set_volume(0.5)
         self.level_music = Music()
-        self.death_sound = pygame.mixer.Sound('../sounds/death.wav')
+        self.death_sound = pygame.mixer.Sound('sounds/death.wav')
 
         # main game
         self.level = None

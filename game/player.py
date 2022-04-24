@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
         # sounds
-        self.hit_sound = pygame.mixer.Sound('../sounds/hit.wav')
+        self.hit_sound = pygame.mixer.Sound('sounds/hit.wav')
         # animations
         self.animations = {'player_idle': [], 'player_run': [], 'player_jump': [], 'player_fall': [], 'player_hit': []}
         self.frames = self.import_player_graphics()
@@ -46,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         Returns:
             dictionary of player animations + their graphics
         """
-        player_path = '../graphics_files/characters/player/'
+        player_path = 'graphics_files/characters/player/'
 
         for animation in self.animations.keys():
             full_path = player_path + animation + '.png'

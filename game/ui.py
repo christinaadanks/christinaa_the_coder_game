@@ -7,15 +7,15 @@ class UI:
         self.display_surface = surface
 
         # health
-        self.health_bar = pygame.image.load('../graphics_files/characters/player/health.png')
+        self.health_bar = pygame.image.load('graphics_files/characters/player/health.png')
         self.health_bar_tl = (28, 20)
         self.health_max_w = 100
         self.health_h = 8
 
         # fruits
-        self.fruits = pygame.image.load('../graphics_files/fruits/fruits_bar.png')
+        self.fruits = pygame.image.load('graphics_files/fruits/fruits_bar.png')
         self.fruits_rect = self.fruits.get_rect(topleft=(22, 50))
-        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 11)
+        self.font = pygame.font.Font('graphics_files/font/emu.ttf', 11)
 
     def display_health(self, curr, full):
         """

@@ -27,11 +27,11 @@ class Level:
             game_surface: screen the game is to be displayed on
         """
         # game sounds
-        self.fruit_sounds = pygame.mixer.Sound('../sounds/coin.wav')
+        self.fruit_sounds = pygame.mixer.Sound('sounds/coin.wav')
         self.fruit_sounds.set_volume(0.5)
-        self.win_sound = pygame.mixer.Sound('../sounds/win.wav')
-        self.kill_sound = pygame.mixer.Sound('../sounds/kill.mp3')
-        self.death_sound = pygame.mixer.Sound('../sounds/death.wav')
+        self.win_sound = pygame.mixer.Sound('sounds/win.wav')
+        self.kill_sound = pygame.mixer.Sound('sounds/kill.mp3')
+        self.death_sound = pygame.mixer.Sound('sounds/death.wav')
         self.level_music = Music()
         self.level_music.play()
 
@@ -114,7 +114,7 @@ class Level:
                         player_sprite = Player((x, y), self.display_surface, update_health)
                         self.player.add(player_sprite)
                     else:
-                        goal_surface_list = import_graphics('../graphics_files/characters/player/end.png')
+                        goal_surface_list = import_graphics('graphics_files/characters/player/end.png')
                         goal_surface = goal_surface_list[int(col)]
                         sprite = GraphicTiles(TILE_SIZE, x, y, goal_surface)
                         self.goal.add(sprite)
@@ -136,7 +136,7 @@ class Level:
                     y = row_index * TILE_SIZE
 
                     if category == 'terrain':
-                        terrain_tile_list = import_graphics('../graphics_files/terrain/terrain.png')
+                        terrain_tile_list = import_graphics('graphics_files/terrain/terrain.png')
                         terrain_surface = terrain_tile_list[int(col)]
                         sprite = GraphicTiles(TILE_SIZE, x, y, terrain_surface)
 
@@ -145,34 +145,34 @@ class Level:
 
                     if category == 'fruits':
                         if col == '0':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Apple.png', 1)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Apple.png', 1)
                         if col == '17':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Bananas.png', 2)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Bananas.png', 2)
                         if col == '34':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Cherries.png', 2)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Cherries.png', 2)
                         if col == '51':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Kiwi.png', 2)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Kiwi.png', 2)
                         if col == '68':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Melon.png', 1)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Melon.png', 1)
                         if col == '85':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Orange.png', 1)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Orange.png', 1)
                         if col == '102':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Pineapple.png', 1)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Pineapple.png', 1)
                         if col == '119':
-                            sprite = Fruit(TILE_SIZE, x, y, '../graphics_files/fruits/Strawberry.png', 1)
+                            sprite = Fruit(TILE_SIZE, x, y, 'graphics_files/fruits/Strawberry.png', 1)
 
                     if category == 'enemies':
                         if col == '1':
-                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/slime_enemy.png')
+                            sprite = Enemy(TILE_SIZE, x, y, 'graphics_files/characters/enemy/slime_enemy.png')
                             self.enemy_status = 'slime'
                         if col == '2':
-                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/duck_enemy.png')
+                            sprite = Enemy(TILE_SIZE, x, y, 'graphics_files/characters/enemy/duck_enemy.png')
                             self.enemy_status = 'duck'
                         if col == '3':
-                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/ghost_enemy.png')
+                            sprite = Enemy(TILE_SIZE, x, y, 'graphics_files/characters/enemy/ghost_enemy.png')
                             self.enemy_status = 'ghost'
                         if col == '4':
-                            sprite = Enemy(TILE_SIZE, x, y, '../graphics_files/characters/enemy/rabbit_enemy.png')
+                            sprite = Enemy(TILE_SIZE, x, y, 'graphics_files/characters/enemy/rabbit_enemy.png')
                             self.enemy_status = 'rabbit'
 
                     if category == 'constraints':

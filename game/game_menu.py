@@ -27,7 +27,7 @@ class Icon(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         self.pos = pos
-        self.frames = import_graphics('../graphics_files/fruits/Cherries.png')
+        self.frames = import_graphics('graphics_files/fruits/Cherries.png')
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(center=pos)
@@ -62,7 +62,7 @@ class GameMenu:
         self.setup_icon()
 
         # directions for game menu
-        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 8)
+        self.font = pygame.font.Font('graphics_files/font/emu.ttf', 8)
         self.dir_surf = self.font.render('press SPACE or ENTER to begin level', True, 'black')
         self.dir_rect = self.dir_surf.get_rect(center=(160, 80))
         self.dir_surf2 = self.font.render('press ESC to exit level & return to menu', True, 'black')
@@ -75,7 +75,7 @@ class GameMenu:
         self.dir_rect5 = self.dir_surf.get_rect(center=(160, 130))
         self.dir_surf6 = self.font.render('player dies if they fall off or lose all health', True, 'black')
         self.dir_rect6 = self.dir_surf.get_rect(center=(160, 140))
-        self.font = pygame.font.Font('../graphics_files/font/emu.ttf', 12)
+        self.font = pygame.font.Font('graphics_files/font/emu.ttf', 12)
         self.quit_surf = self.font.render('press ESC to quit', True, 'black')
         self.quit_rect = self.dir_surf.get_rect(center=(260, 300))
 
