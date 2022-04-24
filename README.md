@@ -1,14 +1,26 @@
 # christinaa the pink coder game
-There are currently 4 levels available for play. Only level 1 is initially unlocked, but each level you beat unlocks the next level.
+There are currently 4 levels available for play.  
+Only level 1 is initially unlocked, but each level you beat unlocks the next level.  
 
+**LINK TO THE GAME:** https://github.com/christinaadanks/christinaa_the_coder_game
 ## set up directions
+### downloading the zip file
 1. Download the zip file by going to **Code** in the top right corner, and click **Download ZIP**
 2. Unzip the file
-3. Open the ENTIRE python project in your IDE
+3. Open the python project in your IDE
 4. Run the **main.py** file in the **game_code** module to play the game!
 
+### clone the git
+1. Open up your terminal
+2. Go to the directory/folder you would like to clone the game to
+3. type `git clone` + HTTPS link provided in **Code** in the top right corner
+4. type `cd christinaa_the_coder_game`
+5. type `python setup.py install`
+6. Open the python project in your IDE
+7. Run the **main.py** file in the **game_code** module to play the game!
+
 ## how to play the game
-Once you've started the game the game menu will pop up!
+Once you've started the game, the game menu will pop up!
 
 - use the left and right arrows to move between the unlocked levels, and press SPACE to begin playing.  
 
