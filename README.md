@@ -1,6 +1,7 @@
 # christinaa the pink coder game
 There are currently 4 levels available for play.  
 Only level 1 is initially unlocked, but each level you beat unlocks the next level.  
+*2 levels currently unlocked for project grading purposes*
 
 **LINK TO THE GAME:** https://github.com/christinaadanks/christinaa_the_coder_game
 ## set up directions
